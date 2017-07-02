@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Carto</title>
+    <meta name="description" content="Carto">
+    <meta name="keywords" content="Carto, Map">
+
+    <meta property="og:title" content="Carto">
+    <meta property="og:type" content="website">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name='viewport' content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <meta name="google" content="notranslate">
+    <meta name="theme-color" content="#f5f5f5">
+    <style>
+        .startup {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            background-color: #eeeeee;
+
+            -moz-user-select: none;
+            -webkit-user-select: none;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            display: -webkit-box;
+            display: -webkit-flex;
+            -webkit-align-items: center;
+            -webkit-justify-content: center;
+        }
+
+        .spinner-container {
+            -webkit-animation: rotate 2s linear infinite;
+            animation: rotate 2s linear infinite;
+            z-index: 2;
+        }
+
+        .spinner-container .path {
+            stroke-dasharray: 1, 150;
+            stroke-dashoffset: 0;
+            stroke: rgba(63, 81, 181, 0.7);
+            stroke-linecap: round;
+            -webkit-animation: dash 1.5s ease-in-out infinite;
+            animation: dash 1.5s ease-in-out infinite;
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @-webkit-keyframes rotate {
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes dash {
+            0% {
+                stroke-dasharray: 1, 150;
+                stroke-dashoffset: 0;
+            }
+            50% {
+                stroke-dasharray: 90, 150;
+                stroke-dashoffset: -35;
+            }
+            100% {
+                stroke-dasharray: 90, 150;
+                stroke-dashoffset: -124;
+            }
+        }
+
+        @-webkit-keyframes dash {
+            0% {
+                stroke-dasharray: 1, 150;
+                stroke-dashoffset: 0;
+            }
+            50% {
+                stroke-dasharray: 90, 150;
+                stroke-dashoffset: -35;
+            }
+            100% {
+                stroke-dasharray: 90, 150;
+                stroke-dashoffset: -124;
+            }
+        }
+    </style>
+
+
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.css' rel='stylesheet' />
+
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+<div class="startup" id="startup">
+    <svg class="spinner-container" style="width:65px;height:65px;"
+         viewBox="0 0 44 44">
+        <circle class="path" cx="22" cy="22" r="20" fill="none" stroke-width="4">
+        </circle>
+    </svg>
+</div>
+<div id='map' style="visibility: hidden"></div>
+<section class="Map-tools" id="Map-tools" style="visibility: hidden">
+    <h1>Style</h1>
+    <span class="Map-tools-subtitle">Change the Visualization</span>
+
+    <div class="Map-tools-item" id="item-map-style">
+        <label>Map Style</label>
+        <div class="Map-tools-item-inputs">
+            <select name='map-style' id="select-map-style" class="Map-tools-select">
+                <option value="basic">Basic</option>
+                <option value="streets">Streets</option>
+                <option value="bright">Bright</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+                <option value="satellite">Satellite</option>
+            </select>
+        </div>
+    </div>
+    <div class="Map-tools-item" id="item-data-style">
+        <label>Data Style</label>
+        <div class="Map-tools-item-inputs">
+            <select name='map-style' id="select-data-style" class="Map-tools-select">
+                <option value="markers">Markers</option>
+                <option value="cluster">Clustering</option>
+                <option value="heatmap">Heatmap</option>
+            </select>
+        </div>
+    </div>
+    <div class="Map-tools-item" id="item-fill">
+        <span>Fill</span>
+        <div class="Map-tools-item-inputs">
+            <input type="number" step="1" max="20" min="4" id="number-fill-size">
+            <input class="Map-tools-colorpicker" type="color" id="colorpicker-fill">
+        </div>
+    </div>
+    <div class="Map-tools-item" id="item-stroke">
+        <span>Stroke</span>
+        <div class="Map-tools-item-inputs">
+            <input type="number" step="1" max="10" min="0" id="number-stroke-size">
+            <input class="Map-tools-colorpicker" type="color" id="colorpicker-stroke">
+        </div>
+    </div>
+</section>
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.1.0/mapbox-gl-geocoder.min.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.1.0/mapbox-gl-geocoder.css' type='text/css' />
+<script>
+    var cb = function() {
+        var l = document.createElement('link');
+        l.rel = 'stylesheet';
+        l.href = 'style.css';
+        var h = document.getElementsByTagName('head')[0];
+        h.parentNode.insertBefore(l, h);
+    };
+    var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+        webkitRequestAnimationFrame || msRequestAnimationFrame;
+    if (raf) raf(cb);
+    else window.addEventListener('load', cb);
+</script>
+<script src="main.js"></script>
+</body>
+</html>
